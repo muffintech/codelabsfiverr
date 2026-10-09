@@ -1,0 +1,11 @@
+# Always revalidate HTML, CSS and JS so a new deploy shows up straight away.
+<IfModule mod_headers.c>
+  <FilesMatch "\.(html|css|js)$">
+    Header set Cache-Control "no-cache, must-revalidate"
+  </FilesMatch>
+  <FilesMatch "\.(webp|png|svg|jpg)$">
+    Header set Cache-Control "public, max-age=604800"
+  </FilesMatch>
+</IfModule>
+
+ErrorDocument 404 /404.html

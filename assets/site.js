@@ -3,7 +3,8 @@
 (function () {
   'use strict';
 
-  document.documentElement.classList.add('cl-js');
+  // Content is only hidden for the reveal effect once the reveal code is running (see initReveal),
+  // so a script failure can never leave sections invisible.
   var $ = function (s, r) { return (r || document).querySelector(s); };
   var $$ = function (s, r) { return Array.prototype.slice.call((r || document).querySelectorAll(s)); };
   var reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -87,6 +88,7 @@
   /* Reveal on scroll */
   function initReveal() {
     var items = $$('[data-reveal]');
+    document.documentElement.classList.add('cl-js');
     if (reduceMotion || !('IntersectionObserver' in window)) { items.forEach(function (el) { el.classList.add('is-in'); }); return; }
     items.forEach(function (el) {
       var sibs = $$(':scope > [data-reveal]', el.parentElement);
