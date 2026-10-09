@@ -1,29 +1,27 @@
 # codelabsstorefront.com
 
-The business site for Codelabs, fronted by Nitin. It's built as a Shopify-style storefront: services are a product collection, pricing is a product page, the cart is a drawer, and checkout is a quote request. No payment is taken.
+Portfolio site for Codelabs, fronted by Nitin. Every order goes to Fiverr: the site has no contact details, forms, email or social links, in line with Fiverr's rules on off-platform communication.
 
-Plain HTML, CSS and JS, with no build step. Upload the folder to any static host.
+Plain HTML, CSS and JS with no build step. On Hostinger, choose **"continue as a static website"**.
 
 ```
-index.html          the storefront (all sections)
-privacy.html        privacy notice (FormSubmit, ipapi, localStorage)
+index.html          the site
+privacy.html        privacy notice (no data collected; ordering happens on Fiverr)
 404.html            not-found page
-assets/styles.css   shared styles (all classes prefixed cl-)
-assets/site.js      currency, cart, product page, build demo, thread, checkout
-assets/og-image.png 1200×630 social card (source: tools/og-image.html)
-assets/img/         put nitin-cutout.webp here (see README inside)
-robots.txt, sitemap.xml
+assets/styles.css   styles (classes prefixed cl-)
+assets/site.js      header, reveals, marquee, process demo, scroll thread
+assets/img/         photos and portfolio screenshots
+assets/og-image.png 1200×630 social card (source: tools/og-image.html, render with tools/render.mjs)
 ```
 
-## Settings to know
+## Editing
 
-- **Quote email**: `info@codelabsstorefront.com`, set in `CONFIG` at the top of `assets/site.js`, in the JSON-LD and in the footer. The first FormSubmit submission sends an activation email to that address, which must be clicked before requests arrive.
-- **Currencies**: USD base. GBP = ×1.2 and AUD = ×0.9; values of 100 or more end in 9, smaller values round to whole numbers. Annual care = 10× the monthly price shown. Detection order: saved choice → ipapi.co (GB/AU) → time zone.
-- **Prices** live in the HTML as `data-usd` attributes, so search engines see real USD prices without running JS.
-- **Libraries**: GSAP 3.12.5 + ScrollTrigger (cdnjs) and Lenis 1.1.13 (jsDelivr). They're optional; the site works fully without them.
+- **Prices**: in `index.html`, under `<!-- Packages … EDIT PRICES HERE -->`, and in the JSON-LD `hasOfferCatalog` near the top. Keep both in line with the Fiverr gig.
+- **Fiverr links**: gig `https://www.fiverr.com/codelabs/design-and-develop-your-website`, profile `https://www.fiverr.com/codelabs`. Search and replace to change them.
+- **Portfolio**: add images to `assets/img/`, then copy an `<li class="cl-shot">` in the Work grid (`data-work-grid`). For the hero marquee, copy a `<figure>` in `data-marquee`. A remote image that fails to load is removed automatically.
 
-## Name and photo
+## Palette
 
-The site says "Nitin, founder of Codelabs" and never uses the surname, and it doesn't link LinkedIn. Schema `Person.name` is "Nitin". This keeps the business site from ranking for a full-name search by recruiters, and it never links to the job site.
+Ivory `#FBF8F1` / `#F3EEE3`, paper white, Shopify green `#008060`, deep forest `#0E2A21`, and a lime accent `#C8F169` that sets the brand apart from Shopify's own.
 
-Until `assets/img/nitin-cutout.webp` is added, the hero and About section fall back to the Fiverr profile portrait in an arch frame.
+Fonts: Archivo (headings), Instrument Serif italic (accent words), IBM Plex Sans (body), Mulish (labels).

@@ -6,21 +6,22 @@
 <title>Page not found | Codelabs</title>
 <meta name="robots" content="noindex">
 <link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
-<link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..900&amp;family=IBM+Plex+Sans:wght@400;500;600&amp;family=Mulish:wght@600;700;800&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@100,500..800&amp;family=IBM+Plex+Sans:wght@400;500;600&amp;family=Instrument+Serif:ital@1&amp;family=Mulish:wght@600;700;800&amp;display=swap" rel="stylesheet">
 <link rel="stylesheet" href="/assets/styles.css">
 <style>
   .cl-404 { min-height: 100vh; display: grid; place-items: center; text-align: center; padding: 40px 16px; }
-  .cl-404 .cl-hero__name { font-size: clamp(120px, 30vw, 320px); }
-  .cl-404 p { color: var(--muted); margin: 16px auto 24px; max-width: 40ch; }
+  .cl-404__n { font-family: var(--f-head); font-weight: 800; font-size: clamp(120px, 26vw, 280px); line-height: .9; letter-spacing: -.07em; color: var(--green); }
+  .cl-404 .cl-h2 { margin: 12px auto 0; }
+  .cl-404 p { color: var(--muted); margin: 16px auto 26px; max-width: 40ch; }
 </style>
 </head>
 <body>
 <main class="cl-404">
   <div>
-    <p class="cl-hero__name" aria-hidden="true">404</p>
-    <h1 class="cl-h2" style="margin:0 auto">This page is out of stock.</h1>
-    <p>The link may be old, or the page has moved. Everything for sale is on the home page.</p>
-    <a class="cl-btn cl-btn--primary" href="/">Back to the store</a>
+    <p class="cl-404__n" aria-hidden="true">404</p>
+    <h1 class="cl-h2">This page is <em>out of stock.</em></h1>
+    <p>The link may be old, or the page has moved.</p>
+    <a class="cl-btn cl-btn--green cl-btn--lg" href="/">Back to the home page</a>
   </div>
 </main>
 </body>
