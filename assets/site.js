@@ -3,15 +3,26 @@
 (function () {
   'use strict';
 
-  // Content is only hidden for the reveal effect once the reveal code is running (see initReveal),
-  // so a script failure can never leave sections invisible.
+  var FIVERR_PROFILE = 'https://www.fiverr.com/codelabs';
   var $ = function (s, r) { return (r || document).querySelector(s); };
   var $$ = function (s, r) { return Array.prototype.slice.call((r || document).querySelectorAll(s)); };
   var reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   var lenis = null;
-  var thread = null;
 
-  /* Smooth scrolling (optional) */
+  function money(n) { return '$' + Math.round(n).toLocaleString('en-US'); }
+  function esc(s) { return String(s).replace(/[&<>"']/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]; }); }
+
+  var toastTimer;
+  function toast(msg) {
+    var el = $('#cl-toast');
+    if (!el) return;
+    el.textContent = msg;
+    el.classList.add('is-on');
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(function () { el.classList.remove('is-on'); }, 3200);
+  }
+
+  /* ---------------- Smooth scroll (optional) ---------------- */
   function initLenis() {
     if (reduceMotion || typeof window.Lenis !== 'function') return;
     try {
@@ -27,7 +38,6 @@
     } catch (e) { lenis = null; }
   }
 
-  /* In-page anchors */
   function initAnchors() {
     document.addEventListener('click', function (e) {
       var a = e.target.closest('a[href^="#"]');
@@ -37,17 +47,14 @@
       if (!target) return;
       e.preventDefault();
       closeMenu();
-      if (lenis) lenis.scrollTo(target, { offset: -84 });
-      else {
-        var y = id === 'top' ? 0 : target.getBoundingClientRect().top + window.pageYOffset - 84;
-        window.scrollTo({ top: y, behavior: reduceMotion ? 'auto' : 'smooth' });
-      }
+      if (lenis) lenis.scrollTo(target, { offset: -80 });
+      else window.scrollTo({ top: id === 'top' ? 0 : target.getBoundingClientRect().top + window.pageYOffset - 80, behavior: reduceMotion ? 'auto' : 'smooth' });
       if (history.replaceState) history.replaceState(null, '', '#' + id);
     });
   }
 
-  /* Header: floating pill on scroll, mobile menu, active section */
-  var menuBtn, nav;
+  /* ---------------- Header ---------------- */
+  var nav, menuBtn;
   function closeMenu() {
     if (!nav || !nav.classList.contains('is-open')) return;
     nav.classList.remove('is-open');
@@ -55,18 +62,18 @@
   }
   function initHeader() {
     var header = $('#cl-header');
-    menuBtn = $('#cl-menubtn');
     nav = $('#cl-nav');
-    var onScroll = function () { header.classList.toggle('is-scrolled', window.pageYOffset > 40); };
+    menuBtn = $('#cl-menubtn');
+    var onScroll = function () { header.classList.toggle('is-scrolled', window.pageYOffset > 10); };
     window.addEventListener('scroll', onScroll, { passive: true });
     onScroll();
-    if (menuBtn) menuBtn.addEventListener('click', function () {
+    menuBtn.addEventListener('click', function () {
       var open = !nav.classList.contains('is-open');
       nav.classList.toggle('is-open', open);
       menuBtn.setAttribute('aria-expanded', open ? 'true' : 'false');
     });
     document.addEventListener('keydown', function (e) { if (e.key === 'Escape') closeMenu(); });
-    document.addEventListener('click', function (e) { if (nav.classList.contains('is-open') && !e.target.closest('.cl-header')) closeMenu(); });
+    document.addEventListener('click', function (e) { if (!e.target.closest('.cl-header')) closeMenu(); });
 
     if (!('IntersectionObserver' in window)) return;
     var links = $$('[data-nav]');
@@ -76,24 +83,20 @@
       entries.forEach(function (en) { vis[en.target.id] = en.isIntersecting; });
       var cur = null;
       secs.forEach(function (s) { if (!cur && vis[s.id]) cur = s.id; });
-      links.forEach(function (l) {
-        var on = l.getAttribute('data-nav') === cur;
-        l.classList.toggle('is-active', on);
-        if (on) l.setAttribute('aria-current', 'true'); else l.removeAttribute('aria-current');
-      });
+      links.forEach(function (l) { l.classList.toggle('is-active', l.getAttribute('data-nav') === cur); });
     }, { rootMargin: '-45% 0px -50% 0px' });
     secs.forEach(function (s) { io.observe(s); });
   }
 
-  /* Reveal on scroll */
+  /* ---------------- Reveal on scroll ---------------- */
   function initReveal() {
     var items = $$('[data-reveal]');
+    // Content is only hidden once this code is running, so a script failure never hides the page.
     document.documentElement.classList.add('cl-js');
     if (reduceMotion || !('IntersectionObserver' in window)) { items.forEach(function (el) { el.classList.add('is-in'); }); return; }
     items.forEach(function (el) {
-      var sibs = $$(':scope > [data-reveal]', el.parentElement);
-      var i = sibs.indexOf(el);
-      if (i > 0) el.style.setProperty('--d', (i % 3) * 0.09 + 's');
+      var i = $$(':scope > [data-reveal]', el.parentElement).indexOf(el);
+      if (i > 0) el.style.setProperty('--d', (i % 4) * 0.08 + 's');
     });
     var io = new IntersectionObserver(function (entries) {
       entries.forEach(function (en) { if (en.isIntersecting) { en.target.classList.add('is-in'); io.unobserve(en.target); } });
@@ -101,240 +104,238 @@
     items.forEach(function (el) { io.observe(el); });
   }
 
-  /* Count-up numbers */
-  function initCounters() {
-    var els = $$('[data-count]');
-    if (!els.length || reduceMotion || !('IntersectionObserver' in window)) return;
-    var io = new IntersectionObserver(function (entries) {
-      entries.forEach(function (en) {
-        if (!en.isIntersecting) return;
-        io.unobserve(en.target);
-        var el = en.target, to = parseFloat(el.getAttribute('data-count')), start = performance.now();
-        var tick = function (now) {
-          var p = Math.min(1, (now - start) / 1400);
-          el.textContent = Math.round(to * (1 - Math.pow(1 - p, 3))).toLocaleString('en-US');
-          if (p < 1) requestAnimationFrame(tick);
-        };
-        requestAnimationFrame(tick);
-      });
-    }, { threshold: 0.6 });
-    els.forEach(function (el) { io.observe(el); });
-  }
-
-  /* Remote images that fail are removed cleanly (no broken tiles) */
+  /* Remote images that fail are removed cleanly */
   function initImages() {
     $$('img[data-hide-on-error]').forEach(function (img) {
       var fail = function () {
-        var tile = img.closest('.cl-shot, .cl-case__img, figure');
-        if (img.closest('.cl-case')) img.closest('.cl-case').classList.add('is-noimg');
-        if (tile) tile.remove();
-        if (thread) thread.refresh();
+        var c = img.closest('.cl-case');
+        if (c) { c.classList.add('is-noimg'); img.closest('figure').remove(); return; }
+        var li = img.closest('li');
+        if (li) li.remove();
       };
       if (img.complete && img.naturalWidth === 0 && img.currentSrc) fail();
       else img.addEventListener('error', fail, { once: true });
     });
   }
 
-  /* Marquee: duplicate the items once so the loop is seamless */
-  function initMarquee() {
-    var track = $('[data-marquee]');
-    if (!track) return;
-    $$(':scope > figure', track).forEach(function (f) {
-      var c = f.cloneNode(true);
-      c.setAttribute('aria-hidden', 'true');
-      var img = $('img', c);
-      if (img && img.hasAttribute('data-hide-on-error')) img.addEventListener('error', function () { c.remove(); }, { once: true });
-      track.appendChild(c);
+  /* Scrolling band: duplicate once for a seamless loop */
+  function initBand() {
+    var t = $('[data-band]');
+    if (!t) return;
+    t.innerHTML += t.innerHTML;
+    if (reduceMotion) t.style.animation = 'none';
+  }
+
+  /* ---------------- Custom quote calculator ----------------
+     Prices in USD. Branded stores start at $1,500. Edit the numbers here. */
+  var PRICING = {
+    design: { theme: { label: 'Branded premium theme', base: 1500, weeks: 3 },
+              figma: { label: 'Build from your Figma designs', base: 2000, weeks: 3.5 },
+              custom: { label: 'Fully custom design + theme', base: 2500, weeks: 4.5 } },
+    includedPages: 8,
+    perPage: 60,
+    products: [ { label: 'None', cost: 0 }, { label: 'Up to 25', cost: 0 }, { label: 'Up to 100', cost: 120 },
+                { label: 'Up to 250', cost: 300 }, { label: 'Up to 500', cost: 550 }, { label: '1,000+', cost: 900 } ],
+    features: { megamenu: ['Mega menu & advanced filters', 200], bundles: ['Bundles, upsells & cross-sells', 250],
+                subs: ['Subscriptions', 300], intl: ['Multi-language & currency', 250], b2b: ['B2B / wholesale pricing', 450],
+                integration: ['Custom app or API integration', 800], migration: ['Migration from another platform', 350],
+                klaviyo: ['Klaviyo email flows', 250], motion: ['Custom animations & interactions', 400], blog: ['Blog & content setup', 150] },
+    rush: 0.2,
+    spread: 0.25
+  };
+  var refInfo = null;
+
+  function round50(n) { return Math.round(n / 50) * 50; }
+
+  function estimate() {
+    var form = $('#cl-calc-form');
+    var design = PRICING.design[form.design.value];
+    var pages = +form.pages.value;
+    var prodIdx = +form.products.value;
+    var feats = $$('input[name="feat"]:checked', form).map(function (c) { return c.value; });
+    var rush = form.speed.value === 'rush';
+    var lines = [[design.label, design.base]];
+    var extraPages = Math.max(0, pages - PRICING.includedPages);
+    lines.push([pages + ' pages' + (extraPages ? ' (' + extraPages + ' extra)' : ''), extraPages * PRICING.perPage]);
+    var prod = PRICING.products[prodIdx];
+    lines.push(['Products: ' + prod.label.toLowerCase(), prod.cost]);
+    feats.forEach(function (f) { lines.push(PRICING.features[f]); });
+    var total = lines.reduce(function (s, l) { return s + l[1]; }, 0);
+    if (rush) { lines.push(['Rush timeline (+20%)', total * PRICING.rush]); total *= 1 + PRICING.rush; }
+    var low = Math.max(1500, round50(total));
+    var high = round50(low * (1 + PRICING.spread));
+    var weeks = design.weeks + extraPages / 12 + feats.length * 0.3 + Math.max(0, prodIdx - 1) * 0.3;
+    if (rush) weeks *= 0.75;
+    var w = Math.max(2, Math.round(weeks));
+    return { lines: lines, low: low, high: high, weeks: w + '–' + (w + 1) + ' weeks', pages: pages, products: prod.label, design: design.label,
+             feats: feats.map(function (f) { return PRICING.features[f][0]; }), rush: rush };
+  }
+
+  function renderEstimate() {
+    var e = estimate();
+    $('#cl-lines').innerHTML = e.lines.map(function (l) {
+      return '<li><span>' + esc(l[0]) + '</span><span>' + (l[1] ? money(l[1]) : 'Included') + '</span></li>';
+    }).join('');
+    $('#cl-total').textContent = money(e.low) + ' – ' + money(e.high);
+    $('#cl-time').textContent = e.weeks;
+    $('#cl-pages-out').textContent = e.pages;
+    $('#cl-products-out').textContent = e.products;
+  }
+
+  function normaliseUrl(v) {
+    v = (v || '').trim();
+    if (!v) return null;
+    if (!/^https?:\/\//i.test(v)) v = 'https://' + v;
+    try { var u = new URL(v); return /\./.test(u.hostname) ? u : null; } catch (e) { return null; }
+  }
+
+  function analyse() {
+    var input = $('#cl-ref');
+    var out = $('#cl-ref-out');
+    var btn = $('#cl-analyse');
+    var u = normaliseUrl(input.value);
+    if (!u) { toast('Enter a website address, like allbirds.com'); input.focus(); return; }
+    out.hidden = false;
+    out.className = 'cl-ref cl-ref--loading';
+    out.innerHTML = '<div class="cl-ref__shot"></div><div><p class="cl-ref__name">Reading ' + esc(u.hostname) + '…</p><p class="cl-ref__msg">This can take up to 20 seconds.</p></div>';
+    btn.disabled = true;
+
+    var q = [
+      'url=' + encodeURIComponent(u.href), 'screenshot=true', 'meta=true',
+      'data.links.selectorAll=a', 'data.links.attr=href',
+      'data.langs.selectorAll=' + encodeURIComponent('link[hreflang]'), 'data.langs.attr=hreflang',
+      'data.shop.selector=' + encodeURIComponent('script[src*="cdn.shopify.com"]'), 'data.shop.attr=' + encodeURIComponent('src'),
+      'data.wp.selector=' + encodeURIComponent('script[src*="wp-content"],script[src*="wp-includes"]'), 'data.wp.attr=' + encodeURIComponent('src')
+    ].join('&');
+    var ctrl = window.AbortController ? new AbortController() : null;
+    var timer = setTimeout(function () { if (ctrl) ctrl.abort(); }, 25000);
+
+    fetch('https://api.microlink.io/?' + q, ctrl ? { signal: ctrl.signal } : {})
+      .then(function (r) { return r.json(); })
+      .then(function (res) {
+        clearTimeout(timer);
+        if (!res || res.status !== 'success' || !res.data) throw new Error('fail');
+        showRef(u, res.data);
+      })
+      .catch(function () {
+        clearTimeout(timer);
+        refInfo = { url: u.href, ok: false };
+        out.className = 'cl-ref';
+        out.innerHTML = '<div class="cl-ref__shot">No preview</div><div><p class="cl-ref__name">' + esc(u.hostname) + '</p>' +
+          '<p class="cl-ref__msg">I couldn’t read this site automatically (some sites block it). That’s fine: set the options below and I’ll review the site myself when you send the brief.</p></div>';
+      })
+      .then(function () { btn.disabled = false; });
+  }
+
+  function showRef(u, d) {
+    var out = $('#cl-ref-out');
+    var form = $('#cl-calc-form');
+    var host = u.hostname.replace(/^www\./, '');
+    var links = (Array.isArray(d.links) ? d.links : []).filter(Boolean);
+    var paths = {}, products = {}, collections = {};
+    links.forEach(function (href) {
+      try {
+        var l = new URL(href, u.href);
+        if (l.hostname.replace(/^www\./, '') !== host) return;
+        var p = l.pathname.replace(/\/$/, '') || '/';
+        if (/\/products\//.test(p)) products[p] = 1;
+        else if (/\/collections\//.test(p)) collections[p] = 1;
+        else paths[p] = 1;
+      } catch (e) { /* ignore bad links */ }
     });
-    if (reduceMotion) track.style.animation = 'none';
+    var nPages = Object.keys(paths).length, nProducts = Object.keys(products).length, nCollections = Object.keys(collections).length;
+    var langs = Array.isArray(d.langs) ? d.langs.filter(function (x, i, a) { return x && a.indexOf(x) === i && x !== 'x-default'; }) : [];
+    var platform = d.shop ? 'Built on Shopify' : d.wp ? 'Built on WordPress' : 'Platform not detected';
+    var tags = [];
+    tags.push([platform, !!d.shop]);
+    if (nPages) tags.push([nPages + ' pages linked', nPages > 15]);
+    if (nCollections) tags.push([nCollections + ' collections', nCollections > 8]);
+    if (nProducts) tags.push([nProducts + ' products on home page', false]);
+    if (langs.length > 1) tags.push([langs.length + ' languages', true]);
+
+    // Suggest settings from what was found; the visitor can still change them
+    var suggestPages = Math.min(40, Math.max(+form.pages.value, Math.round(5 + nPages * 0.4 + Math.min(nCollections, 10) * 0.5)));
+    form.pages.value = suggestPages;
+    if (langs.length > 1) $('input[name="feat"][value="intl"]', form).checked = true;
+    if (nCollections > 8) $('input[name="feat"][value="megamenu"]', form).checked = true;
+
+    refInfo = { url: u.href, ok: true, title: d.title || host, platform: platform, pages: nPages, collections: nCollections, langs: langs.length };
+    var shot = d.screenshot && d.screenshot.url ? d.screenshot.url : d.image && d.image.url ? d.image.url : '';
+    out.className = 'cl-ref';
+    out.innerHTML = '<div class="cl-ref__shot">' + (shot ? '<img src="' + esc(shot) + '" alt="Screenshot of ' + esc(host) + '">' : 'No preview') + '</div>' +
+      '<div><p class="cl-ref__name">' + esc(d.title || host) + '</p><p class="cl-ref__url">' + esc(u.href) + '</p>' +
+      '<ul class="cl-ref__tags">' + tags.map(function (t) { return '<li' + (t[1] ? ' class="is-hot"' : '') + '>' + esc(t[0]) + '</li>'; }).join('') + '</ul>' +
+      '<p class="cl-ref__msg">I’ve adjusted the pages' + (langs.length > 1 || nCollections > 8 ? ' and features' : '') + ' to match. Change anything below.</p></div>';
+    renderEstimate();
   }
 
-  /* Process: self-playing store build (no scroll-jacking) */
-  function initBuild() {
-    var root = $('#cl-build');
-    if (!root) return;
-    var steps = $$('[data-goto]', root);
-    var toasts = $('[data-mock-toasts]', root);
-    var salesEl = $('[data-mock-sales]', root);
-    var ordersEl = $('[data-mock-orders]', root);
-    var STEP = 2800, LIVE = 7000;
-    var ORDERS = [['Leeds', 84], ['Melbourne', 126], ['Austin', 62], ['Bristol', 148], ['Brisbane', 95], ['Denver', 118]];
-    var stage = 1, timer = null, orderTimer = null, inView = false, paused = false, sales = 0, orders = 0;
-
-    function reset() {
-      sales = 0; orders = 0;
-      salesEl.textContent = '$0';
-      ordersEl.textContent = '0 orders';
-      toasts.innerHTML = '';
-    }
-    function push(i) {
-      var o = ORDERS[i % ORDERS.length];
-      orders += 1; sales += o[1];
-      salesEl.textContent = '$' + sales.toLocaleString('en-US');
-      ordersEl.textContent = orders + (orders === 1 ? ' order' : ' orders');
-      var t = document.createElement('div');
-      t.className = 'cl-mock__toast';
-      t.innerHTML = '<span>New order <b>$' + o[1] + '</b> · ' + o[0] + '</span>';
-      toasts.insertBefore(t, toasts.firstChild);
-      if (toasts.children.length > 3) {
-        var last = toasts.lastElementChild;
-        last.classList.add('is-out');
-        setTimeout(function () { if (last.parentNode) last.parentNode.removeChild(last); }, 400);
-      }
-    }
-    function setStage(n) {
-      stage = n;
-      root.setAttribute('data-stage', String(n));
-      root.style.setProperty('--cl-step-ms', (n === 4 ? LIVE : STEP) + 'ms');
-      steps.forEach(function (b) {
-        b.setAttribute('aria-selected', b.getAttribute('data-goto') === String(n) ? 'true' : 'false');
-        var bar = $('.cl-step__bar', b);
-        bar.style.animation = 'none'; void bar.offsetWidth; bar.style.animation = '';
-      });
-      clearInterval(orderTimer);
-      reset();
-      if (n === 4) {
-        var i = 0;
-        setTimeout(function () { if (stage === 4) push(i++); }, 500);
-        orderTimer = setInterval(function () { if (stage === 4) push(i++); }, 1300);
-      }
-    }
-    function schedule() {
-      clearTimeout(timer);
-      if (!inView || paused || reduceMotion) return;
-      timer = setTimeout(function () { setStage(stage === 4 ? 1 : stage + 1); schedule(); }, stage === 4 ? LIVE : STEP);
-    }
-    steps.forEach(function (b) { b.addEventListener('click', function () { setStage(+b.getAttribute('data-goto')); schedule(); }); });
-    root.addEventListener('mouseenter', function () { paused = true; root.classList.add('is-paused'); clearTimeout(timer); });
-    root.addEventListener('mouseleave', function () { paused = false; root.classList.remove('is-paused'); schedule(); });
-
-    if (reduceMotion || !('IntersectionObserver' in window)) { setStage(4); return; }
-    setStage(1);
-    new IntersectionObserver(function (en) {
-      inView = en[0].isIntersecting;
-      if (inView) schedule(); else { clearTimeout(timer); clearInterval(orderTimer); }
-    }, { threshold: 0.35 }).observe(root);
+  function briefText() {
+    var e = estimate();
+    var lines = [
+      'Hi Nitin, I used the estimator on codelabsstorefront.com.',
+      '',
+      'Reference store: ' + (refInfo ? refInfo.url : ($('#cl-ref').value || 'none')),
+      refInfo && refInfo.ok ? 'Detected: ' + refInfo.platform + ', ' + refInfo.pages + ' pages linked' + (refInfo.langs > 1 ? ', ' + refInfo.langs + ' languages' : '') : '',
+      'Design: ' + e.design,
+      'Pages: ' + e.pages,
+      'Products: ' + e.products,
+      'Features: ' + (e.feats.length ? e.feats.join(', ') : 'none selected'),
+      'Timeline: ' + (e.rush ? 'rush' : 'standard') + ' (' + e.weeks + ')',
+      'Estimate: ' + money(e.low) + ' – ' + money(e.high)
+    ];
+    return lines.filter(function (l, i) { return l !== '' || i === 1; }).join('\n');
   }
 
-  /* Thread: dashed path linking sections; a glowing orb with a light trail
-     follows the scroll and pulses each milestone as it passes. Desktop only. */
-  function initThread() {
-    var main = $('.cl-main');
-    var heads = $$('[data-ms]');
-    if (!main || heads.length < 2) return;
-    var NS = 'http://www.w3.org/2000/svg';
-    var box = document.createElement('div');
-    box.className = 'cl-thread';
-    box.setAttribute('aria-hidden', 'true');
-    var svg = document.createElementNS(NS, 'svg');
-    var mk = function (cls) { var p = document.createElementNS(NS, 'path'); p.setAttribute('class', cls); svg.appendChild(p); return p; };
-    var base = mk('cl-thread__base'), glow = mk('cl-thread__glow'), lit = mk('cl-thread__lit');
-    var msGroup = document.createElementNS(NS, 'g'); svg.appendChild(msGroup);
-    var orb = document.createElementNS(NS, 'circle'); orb.setAttribute('class', 'cl-thread__orb'); orb.setAttribute('r', '6'); svg.appendChild(orb);
-    box.appendChild(svg);
-    main.insertBefore(box, main.firstChild);
-
-    var total = 0, lut = [], msLens = [], msNodes = [], current = 0, target = 0, active = false, raf = null;
-    var mq = window.matchMedia('(min-width: 1180px)');
-
-    function lengthAtY(y) {
-      if (!lut.length || y <= lut[0][1]) return 0;
-      for (var i = 1; i < lut.length; i++) {
-        if (lut[i][1] >= y) {
-          var a = lut[i - 1], b = lut[i], t = b[1] === a[1] ? 0 : (y - a[1]) / (b[1] - a[1]);
-          return a[0] + (b[0] - a[0]) * t;
-        }
-      }
-      return total;
-    }
-    function computeTarget() { return lengthAtY(-main.getBoundingClientRect().top + window.innerHeight * 0.6); }
-
-    function build() {
-      active = mq.matches && !reduceMotion;
-      box.classList.toggle('is-on', active);
-      if (!active) return;
-      var mainTop = main.getBoundingClientRect().top + window.pageYOffset;
-      box.style.height = main.offsetHeight + 'px';
-      svg.setAttribute('viewBox', '0 0 ' + main.offsetWidth + ' ' + main.offsetHeight);
-      var pts = heads.filter(function (h) { return h.offsetParent !== null; }).map(function (h) {
-        var wrap = h.closest('.cl-wrap');
-        var wr = wrap.getBoundingClientRect();
-        var pad = parseFloat(getComputedStyle(wrap).paddingLeft) || 24;
-        var off = Math.min(40, pad * 0.8);
-        var x = h.getAttribute('data-ms') === 'right' ? wr.right - pad + off : wr.left + pad - off;
-        x = Math.max(16, Math.min(x, main.offsetWidth - 16));
-        return { x: x, y: h.getBoundingClientRect().top + window.pageYOffset - mainTop + 12 };
-      });
-      if (pts.length < 2) return;
-      var d = 'M' + pts[0].x + ' ' + pts[0].y;
-      for (var i = 1; i < pts.length; i++) {
-        var a = pts[i - 1], b = pts[i];
-        if (Math.abs(a.x - b.x) < 2) { d += ' L' + b.x + ' ' + b.y; continue; }
-        var bend = Math.min(170, (b.y - a.y) * 0.45), turnY = b.y - bend;
-        d += ' L' + a.x + ' ' + turnY + ' C' + a.x + ' ' + (turnY + bend * 0.6) + ' ' + b.x + ' ' + (b.y - bend * 0.55) + ' ' + b.x + ' ' + b.y;
-      }
-      [base, lit, glow].forEach(function (p) { p.setAttribute('d', d); });
-      total = base.getTotalLength();
-      lut = [];
-      for (var l = 0; l <= total; l += 6) lut.push([l, base.getPointAtLength(l).y]);
-      lut.push([total, base.getPointAtLength(total).y]);
-      msGroup.innerHTML = '';
-      msNodes = []; msLens = [];
-      pts.forEach(function (p) {
-        var pulse = document.createElementNS(NS, 'circle');
-        pulse.setAttribute('class', 'cl-thread__pulse'); pulse.setAttribute('cx', p.x); pulse.setAttribute('cy', p.y); pulse.setAttribute('r', '6');
-        var dot = document.createElementNS(NS, 'circle');
-        dot.setAttribute('class', 'cl-thread__ms'); dot.setAttribute('cx', p.x); dot.setAttribute('cy', p.y); dot.setAttribute('r', '5');
-        msGroup.appendChild(pulse); msGroup.appendChild(dot);
-        msNodes.push({ dot: dot, pulse: pulse, hit: false });
-        msLens.push(lengthAtY(p.y));
-      });
-      current = target = computeTarget();
-      draw();
-    }
-    function draw() {
-      var L = Math.max(0, Math.min(total, current));
-      lit.setAttribute('stroke-dasharray', L + ' ' + (total + 10));
-      var trail = Math.min(L, 220);
-      glow.setAttribute('stroke-dasharray', '0 ' + (L - trail) + ' ' + trail + ' ' + (total + 10));
-      var pt = base.getPointAtLength(L);
-      orb.setAttribute('cx', pt.x); orb.setAttribute('cy', pt.y);
-      msNodes.forEach(function (m, i) {
-        var hit = L >= msLens[i] - 1;
-        if (hit && !m.hit) { m.pulse.classList.remove('is-pulsing'); void m.pulse.getBoundingClientRect(); m.pulse.classList.add('is-pulsing'); }
-        if (hit !== m.hit) { m.hit = hit; m.dot.classList.toggle('is-hit', hit); }
-      });
-    }
-    function loop() {
-      raf = null;
-      if (!active) return;
-      current += (target - current) * 0.12;
-      if (Math.abs(target - current) < 0.5) current = target;
-      draw();
-      if (current !== target) raf = requestAnimationFrame(loop);
-    }
-    var t;
-    function refresh() { clearTimeout(t); t = setTimeout(build, 120); }
-    window.addEventListener('scroll', function () { if (!active) return; target = computeTarget(); if (!raf) raf = requestAnimationFrame(loop); }, { passive: true });
-    window.addEventListener('resize', refresh);
-    window.addEventListener('load', refresh);
-    if (document.fonts && document.fonts.ready) document.fonts.ready.then(refresh);
-    if ('ResizeObserver' in window) new ResizeObserver(refresh).observe(main);
-    build();
-    thread = { refresh: refresh };
+  function copy(text) {
+    if (navigator.clipboard && window.isSecureContext) return navigator.clipboard.writeText(text);
+    return new Promise(function (resolve, reject) {
+      var ta = document.createElement('textarea');
+      ta.value = text; ta.setAttribute('readonly', ''); ta.style.position = 'fixed'; ta.style.opacity = '0';
+      document.body.appendChild(ta); ta.select();
+      try { document.execCommand('copy') ? resolve() : reject(); } catch (e) { reject(e); }
+      document.body.removeChild(ta);
+    });
   }
 
-  /* GSAP: hero entrance and the closing card rising on scroll. One tween per element. */
+  function initCalc() {
+    var form = $('#cl-calc-form');
+    if (!form) return;
+    form.addEventListener('input', renderEstimate);
+    form.addEventListener('change', renderEstimate);
+    form.addEventListener('submit', function (e) { e.preventDefault(); analyse(); });
+    $('#cl-analyse').addEventListener('click', analyse);
+    $('#cl-ref').addEventListener('keydown', function (e) { if (e.key === 'Enter') { e.preventDefault(); analyse(); } });
+    $('#cl-send').addEventListener('click', function () {
+      var text = briefText();
+      // Open Fiverr synchronously (inside the click) so pop-up blockers allow it
+      var win = window.open(FIVERR_PROFILE, '_blank');
+      if (win) win.opener = null;
+      copy(text).then(function () {
+        toast('Brief copied. Paste it into a message to me on Fiverr.');
+        $('#cl-send-note').textContent = 'Copied! On Fiverr, click “Contact me” and paste your brief.';
+      }).catch(function () {
+        window.prompt('Copy your brief, then paste it into a message on Fiverr:', text);
+      });
+      if (!win) toast('Brief copied. Open fiverr.com/codelabs to send it.');
+    });
+    renderEstimate();
+  }
+
+  /* ---------------- GSAP extras (one tween per element) ---------------- */
   function initGsap() {
     var gsap = window.gsap;
     if (!gsap || reduceMotion) return;
     if (window.ScrollTrigger) gsap.registerPlugin(window.ScrollTrigger);
     gsap.timeline({ defaults: { ease: 'power3.out' } })
-      .from('.cl-hero [data-hero]', { y: 22, opacity: 0, duration: .8, stagger: .08 })
-      .from('.cl-portrait', { y: 30, opacity: 0, scale: .97, duration: 1 }, 0.1)
-      .from('.cl-portrait__img', { yPercent: 8, duration: 1.2 }, 0.2);
+      .from('[data-hero]', { y: 26, opacity: 0, duration: .8, stagger: .08 })
+      .from('.cl-sun', { scale: .6, opacity: 0, duration: 1.1 }, 0.1)
+      .from('.cl-hero__img', { y: 60, opacity: 0, duration: 1.1 }, 0.25)
+      .from('.cl-hero__art .cl-sticker', { scale: 0, duration: .6, ease: 'back.out(2)', stagger: .15 }, 0.7);
     if (window.ScrollTrigger) {
-      gsap.fromTo('#cl-cta-card', { y: 70, scale: .97 }, { y: 0, scale: 1, ease: 'none', scrollTrigger: { trigger: '.cl-cta', start: 'top bottom', end: 'top 45%', scrub: .6 } });
+      gsap.to('.cl-band', { xPercent: -4, ease: 'none', scrollTrigger: { trigger: '.cl-band', start: 'top bottom', end: 'bottom top', scrub: .5 } });
+      $$('.cl-piece__img img').forEach(function (img) {
+        gsap.fromTo(img, { scale: 1.04 }, { scale: 1, ease: 'none', scrollTrigger: { trigger: img, start: 'top bottom', end: 'bottom top', scrub: .5 } });
+      });
     }
   }
 
@@ -342,12 +343,10 @@
     initLenis();
     initAnchors();
     initHeader();
-    initThread();
     initImages();
-    initMarquee();
+    initBand();
     initReveal();
-    initCounters();
-    initBuild();
+    initCalc();
     initGsap();
     $$('[data-year]').forEach(function (el) { el.textContent = new Date().getFullYear(); });
   }
