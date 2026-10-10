@@ -36,6 +36,6 @@ The "Custom quote" section turns a reference website and a few choices into a pr
 
 ## Look
 
-Warm cream paper (`#F4EEE3`) with a light grain, ink `#1D1B16`, Shopify green `#008060`, sun `#FFB627` and tomato `#F25C3B` accents. Fonts: Young Serif (headings), Bagel Fat One (stickers and the scrolling band), Figtree (body).
+Quiet editorial look: warm cream paper (`#F3EDE3`), ink `#1F1D19`, deep green `#173F33` / `#0B6B4F`, with sun `#F2B544` used sparingly. Hairline rules instead of boxes and shadows. Fonts: Newsreader (headings), Figtree (body).
 
 After editing CSS or JS, bump the `?v=` number on the `<link>` and `<script>` tags so browsers fetch the new files.
