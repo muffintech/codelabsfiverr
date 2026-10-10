@@ -425,18 +425,77 @@
     }, { threshold: 0.4 }).observe(root);
   }
 
-  /* Featured project image: local screenshot, then a live screenshot service, then a styled placeholder */
-  function initFeatured() {
-    var img = $('#cl-feat-img');
-    if (!img) return;
-    var list = (img.getAttribute('data-fallbacks') || '').split('|').filter(Boolean);
-    var fail = function () {
-      var next = list.shift();
-      if (next) img.src = next;
-      else img.style.display = 'none';
+  /* ---------------- Project popups ----------------
+     One entry per portfolio piece (data-project="key" in index.html).
+     review: paste the client's real Fiverr review here. Leave it null to show the overall rating instead. */
+  var PROJECTS = {
+    jandadoors: {
+      name: 'J&A Doors', meta: 'Kitchen doors & cabinets · United Kingdom', img: 'assets/img/work-jandadoors.webp', url: 'https://jandadoors.co.uk/',
+      story: 'J&A Doors sells made-to-measure replacement kitchen doors, cabinets and accessories across the UK. With 200+ door styles in many sizes and finishes, the store had to make a big catalogue feel simple. I designed a clean, premium store where shoppers can browse by category, order samples and find their door in a few clicks.',
+      did: ['Custom Shopify design', 'Mega menu for 200+ door styles', 'Samples, cabinets and accessories collections', 'Free-delivery bar and special offers'],
+      review: null
+    },
+    dogood: {
+      name: 'do good.', meta: 'Apparel with a purpose', img: 'assets/img/work-dogood.webp',
+      story: 'An apparel brand where every tee carries a message. The brief was a store that tells the story first and sells second, so I built a bold, photo-led home page with a clear path to the tees.',
+      did: ['Brand-led home page', 'Collection and product pages', 'Reviews and trust badges', 'Mobile-first build'],
+      review: null
+    },
+    rhino: {
+      name: 'Rhino Products', meta: 'Fire & rescue gear · United States', img: 'assets/img/work-rhino.webp',
+      story: 'Gear for US firefighters and rescue crews. The store needed to feel rugged and trustworthy, and make a wide range of bags and kit easy to browse.',
+      did: ['Hero with real brand photography', 'Category shortcuts for the full range', 'Product catalogue setup', 'Speed-tuned theme'],
+      review: null
+    },
+    doncard: {
+      name: 'Don Card', meta: 'Local savings card · United Kingdom', img: 'assets/img/work-doncard.webp',
+      story: 'One card, savings at local businesses across the city. I built a simple store that explains how the card works and sells it in a few taps.',
+      did: ['Clear “how it works” journey', 'Partner business listings', 'Simple checkout for the card', 'Mobile-first build'],
+      review: null
+    },
+    dryeye: {
+      name: 'DryEyeComplete', meta: 'Health supplements', img: 'assets/img/work-dryeye.webp',
+      story: 'A supplement for dry, red, itchy and sore eyes. A clean, clinical look builds trust, with the benefits and ingredients front and centre.',
+      did: ['Clean, clinical design', 'Benefit-led product page', 'Trust and ingredient sections', 'Fast, mobile-first build'],
+      review: null
+    },
+    oakenark: {
+      name: 'Oakenark', meta: 'Handmade wool gifts', img: 'assets/img/work-oakenark.webp',
+      story: 'Handmade wool gifts with a warm, seasonal storefront. Gift-led navigation (shop by occasion, new arrivals, best sellers) helps shoppers find the right present fast.',
+      did: ['Seasonal, story-led home page', 'Gifts-by-occasion navigation', 'New arrivals and best sellers', 'Social and announcement bar'],
+      review: null
+    }
+  };
+
+  function initProjects() {
+    var dlg = $('#cl-modal');
+    if (!dlg || typeof dlg.showModal !== 'function') return;
+    var last = null;
+    var open = function (key) {
+      var p = PROJECTS[key];
+      if (!p) return;
+      $('#cl-modal-img').src = p.img;
+      $('#cl-modal-img').alt = p.name + ' store home page';
+      $('#cl-modal-meta').textContent = p.meta;
+      $('#cl-modal-title').textContent = p.name;
+      $('#cl-modal-story').textContent = p.story;
+      $('#cl-modal-did').innerHTML = p.did.map(function (d) { return '<li>' + esc(d) + '</li>'; }).join('');
+      var stars = '<p class="cl-modal__stars" aria-label="5 out of 5 stars">★★★★★</p>';
+      $('#cl-modal-review').innerHTML = p.review
+        ? stars + '<blockquote>“' + esc(p.review.text) + '”</blockquote><figcaption>' + esc(p.review.who) + '</figcaption>'
+        : stars + '<blockquote>Rated 5.0 across 270+ client reviews on Fiverr.</blockquote><figcaption><a href="' + FIVERR_PROFILE + '" target="_blank" rel="noopener">Read the reviews on Fiverr</a></figcaption>';
+      $('#cl-modal-cta').innerHTML = '<a class="cl-btn cl-btn--green" href="https://www.fiverr.com/codelabs/design-and-develop-your-website" target="_blank" rel="noopener">Get a store like this</a>' +
+        (p.url ? '<a class="cl-arrow" href="' + p.url + '" target="_blank" rel="noopener">See it live</a>' : '');
+      dlg.scrollTop = 0;
+      if (lenis) lenis.stop();
+      dlg.showModal();
     };
-    img.addEventListener('error', fail);
-    if (img.complete && img.naturalWidth === 0 && img.currentSrc) fail();
+    var close = function () { dlg.close(); };
+    dlg.addEventListener('close', function () { if (lenis) lenis.start(); if (last) last.focus(); });
+    dlg.addEventListener('click', function (e) { if (e.target === dlg || e.target.closest('[data-close]')) close(); });
+    $$('[data-project]').forEach(function (b) {
+      b.addEventListener('click', function () { last = b; open(b.getAttribute('data-project')); });
+    });
   }
 
   /* ---------------- GSAP extras (one tween per element) ---------------- */
@@ -466,7 +525,7 @@
     initReveal();
     initCalc();
     initFlow();
-    initFeatured();
+    initProjects();
     initGsap();
     $$('[data-year]').forEach(function (el) { el.textContent = new Date().getFullYear(); });
   }

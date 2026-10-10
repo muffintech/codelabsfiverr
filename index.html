@@ -29,7 +29,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Young+Serif&amp;family=Bagel+Fat+One&amp;family=Figtree:wght@400;500;600;700&amp;display=swap" rel="stylesheet">
-<link rel="stylesheet" href="assets/styles.css?v=20261011c">
+<link rel="stylesheet" href="assets/styles.css?v=20261011d">
 
 <script type="application/ld+json">
 {
@@ -156,25 +156,27 @@
 
     <!-- Featured project. Swap assets/img/work-jandadoors.webp to change the image. -->
     <article class="cl-feat" data-reveal>
-      <div class="cl-feat__frame cl-feat__frame--mock">
+      <button type="button" class="cl-feat__frame cl-feat__frame--mock" data-project="jandadoors" aria-label="View the J and A Doors project">
         <img id="cl-feat-img" src="assets/img/work-jandadoors.webp" alt="J&amp;A Doors kitchen doors store home page" width="1280" height="769" loading="lazy">
-      </div>
+        <span class="cl-peek" aria-hidden="true">View project</span>
+      </button>
       <div class="cl-feat__copy">
         <span class="cl-sticker cl-sticker--sun cl-feat__tag">One of my favourite builds</span>
         <h3>J&amp;A Doors</h3>
         <p class="cl-feat__meta">Doors &amp; home improvement · United Kingdom</p>
         <p>An online store for a UK door specialist, designed and developed end to end, and one of the builds I’m proudest of.</p>
-        <a class="cl-arrow" href="https://jandadoors.co.uk/" target="_blank" rel="noopener">See it live</a>
+        <p class="cl-feat__links"><button type="button" class="cl-btn cl-btn--paper cl-btn--sm" data-project="jandadoors">Project story &amp; review</button><a class="cl-arrow" href="https://jandadoors.co.uk/" target="_blank" rel="noopener">See it live</a></p>
       </div>
     </article>
 
-    <!-- More work: copy an <li> and change the image, name and type. -->
+    <!-- More work: copy an <li>, change the image, name and data-project, and add the project details to PROJECTS in assets/site.js. -->
     <ul class="cl-gallery">
-      <li class="cl-gallery__item cl-gallery__item--wide" data-reveal><figure><div class="cl-piece__img cl-piece__img--mock"><img src="assets/img/work-dogood.webp" alt="do good. apparel store home page" width="1280" height="769" loading="lazy"></div><figcaption><b>do good.</b><span>Apparel with a purpose</span></figcaption></figure></li>
-      <li class="cl-gallery__item cl-gallery__item--wide" data-reveal><figure><div class="cl-piece__img cl-piece__img--mock"><img src="assets/img/work-rhino.webp" alt="Rhino Products fire and rescue gear store home page" width="1280" height="769" loading="lazy"></div><figcaption><b>Rhino Products</b><span>Fire &amp; rescue gear · US</span></figcaption></figure></li>
-      <li class="cl-gallery__item" data-reveal><figure><div class="cl-piece__img cl-piece__img--mock"><img src="assets/img/work-doncard.webp" alt="Don Card local savings card store home page" width="1280" height="769" loading="lazy"></div><figcaption><b>Don Card</b><span>Local savings card · UK</span></figcaption></figure></li>
-      <li class="cl-gallery__item" data-reveal><figure><div class="cl-piece__img cl-piece__img--mock"><img src="assets/img/work-dryeye.webp" alt="DryEyeComplete supplement store home page" width="1280" height="769" loading="lazy"></div><figcaption><b>DryEyeComplete</b><span>Health supplements</span></figcaption></figure></li>
-      <li class="cl-gallery__item" data-reveal><figure><div class="cl-piece__img cl-piece__img--mock"><img src="assets/img/work-oakenark.webp" alt="Oakenark handmade wool gifts store home page" width="1280" height="769" loading="lazy"></div><figcaption><b>Oakenark</b><span>Handmade wool gifts</span></figcaption></figure></li>
+      <li class="cl-gallery__item" data-reveal><figure><button type="button" class="cl-piece__img cl-piece__img--mock" data-project="dogood" aria-label="View the do good. project"><img src="assets/img/work-dogood.webp" alt="do good. apparel store home page" width="1280" height="769" loading="lazy"><span class="cl-peek" aria-hidden="true">View project</span></button><figcaption><b>do good.</b><span>Apparel with a purpose</span></figcaption></figure></li>
+      <li class="cl-gallery__item" data-reveal><figure><button type="button" class="cl-piece__img cl-piece__img--mock" data-project="rhino" aria-label="View the Rhino Products project"><img src="assets/img/work-rhino.webp" alt="Rhino Products fire and rescue gear store home page" width="1280" height="769" loading="lazy"><span class="cl-peek" aria-hidden="true">View project</span></button><figcaption><b>Rhino Products</b><span>Fire &amp; rescue gear · US</span></figcaption></figure></li>
+      <li class="cl-gallery__item" data-reveal><figure><button type="button" class="cl-piece__img cl-piece__img--mock" data-project="doncard" aria-label="View the Don Card project"><img src="assets/img/work-doncard.webp" alt="Don Card local savings card store home page" width="1280" height="769" loading="lazy"><span class="cl-peek" aria-hidden="true">View project</span></button><figcaption><b>Don Card</b><span>Local savings card · UK</span></figcaption></figure></li>
+      <li class="cl-gallery__item" data-reveal><figure><button type="button" class="cl-piece__img cl-piece__img--mock" data-project="dryeye" aria-label="View the DryEyeComplete project"><img src="assets/img/work-dryeye.webp" alt="DryEyeComplete supplement store home page" width="1280" height="769" loading="lazy"><span class="cl-peek" aria-hidden="true">View project</span></button><figcaption><b>DryEyeComplete</b><span>Health supplements</span></figcaption></figure></li>
+      <li class="cl-gallery__item" data-reveal><figure><button type="button" class="cl-piece__img cl-piece__img--mock" data-project="oakenark" aria-label="View the Oakenark project"><img src="assets/img/work-oakenark.webp" alt="Oakenark handmade wool gifts store home page" width="1280" height="769" loading="lazy"><span class="cl-peek" aria-hidden="true">View project</span></button><figcaption><b>Oakenark</b><span>Handmade wool gifts</span></figcaption></figure></li>
+      <li class="cl-gallery__item cl-gallery__more" data-reveal><a href="https://www.fiverr.com/codelabs" target="_blank" rel="noopener"><b>400+</b><span>more Shopify stores in my Fiverr portfolio</span><i class="cl-arrow">See them on Fiverr</i></a></li>
     </ul>
   </div>
 </section>
@@ -184,26 +186,31 @@
   <div class="cl-wrap">
     <header class="cl-head cl-head--split">
       <div>
-        <h2 class="cl-h2" id="cl-markets-title">Built for US, UK &amp; Australian shoppers</h2>
-        <p class="cl-lede">Most of my clients sell in these three markets, so I know what their shoppers expect, from payments and delivery to tax and tone of voice.</p>
+        <h2 class="cl-h2" id="cl-markets-title">Shopify stores for US, UK &amp; Australian brands</h2>
+        <p class="cl-lede">I work mostly with brands in these three countries, and almost all of it is Shopify ecommerce. Over 12 years and 400+ stores, I’ve learned what shoppers in each market expect, from how they pay and get their delivery to how prices, tax and copy should read.</p>
       </div>
     </header>
     <ul class="cl-stamps">
       <li class="cl-stamp cl-stamp--us" data-reveal>
         <div class="cl-stamp__seal" aria-hidden="true"><b>US</b><span>$ USD</span></div>
-        <h3>United States</h3>
+        <h3>United States</h3><p class="cl-stamp__sub">Shopify stores for American brands</p>
         <ul><li>Sales tax set up by state</li><li>USPS, UPS &amp; FedEx rates</li><li>Shop Pay, Afterpay &amp; Klarna</li><li>Accessibility-minded builds</li></ul>
       </li>
       <li class="cl-stamp cl-stamp--uk" data-reveal>
         <div class="cl-stamp__seal" aria-hidden="true"><b>UK</b><span>£ GBP</span></div>
-        <h3>United Kingdom</h3>
+        <h3>United Kingdom</h3><p class="cl-stamp__sub">Shopify stores for British brands</p>
         <ul><li>VAT-inclusive pricing</li><li>Royal Mail, Evri &amp; DPD</li><li>Klarna &amp; Clearpay</li><li>UK GDPR &amp; cookie consent</li></ul>
       </li>
       <li class="cl-stamp cl-stamp--au" data-reveal>
         <div class="cl-stamp__seal" aria-hidden="true"><b>AU</b><span>A$ AUD</span></div>
-        <h3>Australia</h3>
+        <h3>Australia</h3><p class="cl-stamp__sub">Shopify stores for Australian brands</p>
         <ul><li>GST-inclusive pricing</li><li>Australia Post &amp; Sendle</li><li>Afterpay &amp; Zip</li><li>Australian English copy</li></ul>
       </li>
+    </ul>
+    <ul class="cl-mstats" data-reveal>
+      <li><b>400+</b> Shopify stores launched</li>
+      <li><b>12 yrs</b> building ecommerce</li>
+      <li><b>US · UK · AU</b> where most of my clients sell</li>
     </ul>
   </div>
 </section>
@@ -246,31 +253,34 @@
 </section>
 
 <!-- Packages. PACKAGE DATA: keep in line with the Fiverr gig (also the JSON-LD prices at the top). -->
-<section class="cl-sec cl-sec--paper" id="packages" aria-labelledby="cl-packages-title">
+<section class="cl-sec cl-sec--paper cl-xmas" id="packages" aria-labelledby="cl-packages-title">
+  <div class="cl-lights" aria-hidden="true"></div>
   <div class="cl-wrap">
     <header class="cl-head cl-head--center">
-      <p class="cl-sale">Sale prices on Fiverr now</p>
+      <p class="cl-promo"><span class="cl-promo__tag">Early Christmas</span><span class="cl-promo__off">10% off every package</span></p>
       <h2 class="cl-h2" id="cl-packages-title">Simple packages, clear prices</h2>
-      <p class="cl-lede">Same packages and prices as my Fiverr gig. Pick one there, and Fiverr handles payment and keeps it protected until delivery.</p>
+      <p class="cl-lede">Same packages and prices as my Fiverr gig, and right now my Early Christmas offer takes 10% off any of them. Pick one on Fiverr, and Fiverr handles payment and keeps it protected until delivery.</p>
     </header>
 
     <div class="cl-tiers">
       <article class="cl-tier" data-reveal>
+        <span class="cl-gift" aria-hidden="true">−10%</span>
         <h3>Startup</h3>
         <p class="cl-tier__for">Store setup on a paid theme, with a basic look and feel and your branding.</p>
         <p class="cl-tier__price"><s aria-label="Was $399">$399</s><span>$</span>120</p>
-        <p class="cl-tier__meta">5-day delivery · Unlimited revisions · 15 days free bug support</p>
+        <p class="cl-tier__meta">4-day delivery · Unlimited revisions · 15 days free bug support</p>
         <ul class="cl-list">
           <li>Functional, responsive website</li><li>2 pages</li><li>3 products</li><li>3 plugins or apps</li><li>E-commerce and payment integration</li><li>Content upload</li><li>Opt-in form and social icons</li><li>Hosting setup</li>
         </ul>
         <a class="cl-btn cl-btn--paper cl-btn--block" href="https://www.fiverr.com/codelabs/design-and-develop-your-website" target="_blank" rel="noopener">Choose Startup on Fiverr</a>
       </article>
       <article class="cl-tier cl-tier--pop" data-reveal>
+        <span class="cl-gift" aria-hidden="true">−10%</span>
         <span class="cl-tier__badge">Most picked</span>
         <h3>Growth</h3>
         <p class="cl-tier__for">A premium look and feel, more pages and products, plus SEO.</p>
         <p class="cl-tier__price"><s aria-label="Was $749">$749</s><span>$</span>440</p>
-        <p class="cl-tier__meta">7-day delivery · Unlimited revisions · 15 days free bug support</p>
+        <p class="cl-tier__meta">5-day delivery · Unlimited revisions · 15 days free bug support</p>
         <p class="cl-list__plus">Everything in Startup, plus:</p>
         <ul class="cl-list">
           <li>Premium look and feel</li><li>5 pages</li><li>10 products</li><li>6 plugins or apps</li><li>SEO</li><li>Speed optimisation</li><li>Autoresponder integration</li>
@@ -278,16 +288,25 @@
         <a class="cl-btn cl-btn--green cl-btn--block" href="https://www.fiverr.com/codelabs/design-and-develop-your-website" target="_blank" rel="noopener">Choose Growth on Fiverr</a>
       </article>
       <article class="cl-tier" data-reveal>
+        <span class="cl-gift" aria-hidden="true">−10%</span>
         <h3>Elite</h3>
         <p class="cl-tier__for">A fully branded store with advanced features for growing brands.</p>
         <p class="cl-tier__price"><s aria-label="Was $999">$999</s><span>$</span>740</p>
-        <p class="cl-tier__meta">10-day delivery · Unlimited revisions · 15 days free bug support</p>
+        <p class="cl-tier__meta">6-day delivery · Unlimited revisions · 15 days free bug support</p>
         <p class="cl-list__plus">Everything in Growth, plus:</p>
         <ul class="cl-list">
           <li>Branded look and feel</li><li>10 pages</li><li>50 products</li><li>10 plugins or apps</li><li>Advanced features</li>
         </ul>
         <a class="cl-btn cl-btn--paper cl-btn--block" href="https://www.fiverr.com/codelabs/design-and-develop-your-website" target="_blank" rel="noopener">Choose Elite on Fiverr</a>
       </article>
+    </div>
+
+    <div class="cl-needmore" data-reveal>
+      <div>
+        <h3>Need more than a package?</h3>
+        <p>Branded designs, extra features or a migration. Tell me about it and get an instant estimate.</p>
+      </div>
+      <a class="cl-btn cl-btn--sun cl-btn--lg" href="#quote">Get a custom quote</a>
     </div>
 
     <details class="cl-compare">
@@ -297,7 +316,7 @@
           <thead><tr><th scope="col">What you get</th><th scope="col">Startup</th><th scope="col">Growth</th><th scope="col">Elite</th></tr></thead>
           <tbody>
             <tr><th scope="row">Price</th><td><s>$399</s> $120</td><td><s>$749</s> $440</td><td><s>$999</s> $740</td></tr>
-            <tr><th scope="row">Delivery</th><td>5 days</td><td>7 days</td><td>10 days</td></tr>
+            <tr><th scope="row">Delivery</th><td>4 days</td><td>5 days</td><td>6 days</td></tr>
             <tr><th scope="row">Revisions</th><td>Unlimited</td><td>Unlimited</td><td>Unlimited</td></tr>
             <tr><th scope="row">Look and feel</th><td>Basic</td><td>Premium</td><td>Branded</td></tr>
             <tr><th scope="row">Pages</th><td>2</td><td>5</td><td>10</td></tr>
@@ -499,15 +518,15 @@
   <div class="cl-wrap">
     <header class="cl-head cl-head--center">
       <h2 class="cl-h2" id="cl-process-title">How it works</h2>
-      <p class="cl-lede">Four steps, about a week for a Growth store.</p>
+      <p class="cl-lede">Four steps, about five days for a Growth store.</p>
     </header>
 
     <div class="cl-flow" id="cl-flow" data-step="1">
       <ol class="cl-flow__nav" role="tablist" aria-label="Steps">
         <li><button type="button" role="tab" id="cl-ft-1" aria-controls="cl-fp-1" aria-selected="true" data-go="1"><span class="cl-flow__icon" aria-hidden="true"><svg viewBox="0 0 32 32"><path d="M6 8h20v13H13l-6 5v-5H6z" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round"/><path d="M11 13h10M11 17h6" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg></span><b>Brief</b><small>Day 1</small></button></li>
-        <li><button type="button" role="tab" id="cl-ft-2" aria-controls="cl-fp-2" aria-selected="false" data-go="2"><span class="cl-flow__icon" aria-hidden="true"><svg viewBox="0 0 32 32"><circle cx="16" cy="16" r="10" fill="none" stroke="currentColor" stroke-width="2.2"/><circle cx="12" cy="13" r="2" fill="currentColor"/><circle cx="19" cy="11.5" r="2" fill="currentColor"/><circle cx="21" cy="18" r="2" fill="currentColor"/></svg></span><b>Design</b><small>Days 2–4</small></button></li>
-        <li><button type="button" role="tab" id="cl-ft-3" aria-controls="cl-fp-3" aria-selected="false" data-go="3"><span class="cl-flow__icon" aria-hidden="true"><svg viewBox="0 0 32 32"><rect x="5" y="5" width="9" height="9" rx="2" fill="none" stroke="currentColor" stroke-width="2.2"/><rect x="18" y="5" width="9" height="9" rx="2" fill="none" stroke="currentColor" stroke-width="2.2"/><rect x="5" y="18" width="9" height="9" rx="2" fill="none" stroke="currentColor" stroke-width="2.2"/><rect x="18" y="18" width="9" height="9" rx="2" fill="currentColor"/></svg></span><b>Build</b><small>Days 4–6</small></button></li>
-        <li><button type="button" role="tab" id="cl-ft-4" aria-controls="cl-fp-4" aria-selected="false" data-go="4"><span class="cl-flow__icon" aria-hidden="true"><svg viewBox="0 0 32 32"><path d="M16 4c5 3 7 8 6 14l-6 4-6-4c-1-6 1-11 6-14z" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round"/><circle cx="16" cy="12" r="2.4" fill="currentColor"/><path d="M12 24l-2 4M20 24l2 4M16 25v4" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg></span><b>Launch</b><small>Day 7</small></button></li>
+        <li><button type="button" role="tab" id="cl-ft-2" aria-controls="cl-fp-2" aria-selected="false" data-go="2"><span class="cl-flow__icon" aria-hidden="true"><svg viewBox="0 0 32 32"><circle cx="16" cy="16" r="10" fill="none" stroke="currentColor" stroke-width="2.2"/><circle cx="12" cy="13" r="2" fill="currentColor"/><circle cx="19" cy="11.5" r="2" fill="currentColor"/><circle cx="21" cy="18" r="2" fill="currentColor"/></svg></span><b>Design</b><small>Days 2–3</small></button></li>
+        <li><button type="button" role="tab" id="cl-ft-3" aria-controls="cl-fp-3" aria-selected="false" data-go="3"><span class="cl-flow__icon" aria-hidden="true"><svg viewBox="0 0 32 32"><rect x="5" y="5" width="9" height="9" rx="2" fill="none" stroke="currentColor" stroke-width="2.2"/><rect x="18" y="5" width="9" height="9" rx="2" fill="none" stroke="currentColor" stroke-width="2.2"/><rect x="5" y="18" width="9" height="9" rx="2" fill="none" stroke="currentColor" stroke-width="2.2"/><rect x="18" y="18" width="9" height="9" rx="2" fill="currentColor"/></svg></span><b>Build</b><small>Days 3–4</small></button></li>
+        <li><button type="button" role="tab" id="cl-ft-4" aria-controls="cl-fp-4" aria-selected="false" data-go="4"><span class="cl-flow__icon" aria-hidden="true"><svg viewBox="0 0 32 32"><path d="M16 4c5 3 7 8 6 14l-6 4-6-4c-1-6 1-11 6-14z" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round"/><circle cx="16" cy="12" r="2.4" fill="currentColor"/><path d="M12 24l-2 4M20 24l2 4M16 25v4" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg></span><b>Launch</b><small>Day 5</small></button></li>
       </ol>
       <div class="cl-flow__track" aria-hidden="true"><span id="cl-flow-fill"></span></div>
 
@@ -626,11 +645,27 @@
   </div>
 </footer>
 
+
+<!-- Project popup (content comes from PROJECTS in assets/site.js) -->
+<dialog class="cl-modal" id="cl-modal" aria-labelledby="cl-modal-title">
+  <div class="cl-modal__in">
+    <button type="button" class="cl-modal__x" data-close aria-label="Close">×</button>
+    <div class="cl-modal__img"><img id="cl-modal-img" src="" alt="" width="1280" height="769"></div>
+    <div class="cl-modal__body">
+      <p class="cl-modal__meta" id="cl-modal-meta"></p>
+      <h3 id="cl-modal-title"></h3>
+      <p class="cl-modal__story" id="cl-modal-story"></p>
+      <ul class="cl-modal__did" id="cl-modal-did"></ul>
+      <figure class="cl-modal__review" id="cl-modal-review"></figure>
+      <div class="cl-modal__cta" id="cl-modal-cta"></div>
+    </div>
+  </div>
+</dialog>
 <div class="cl-toast" id="cl-toast" role="status" aria-live="polite"></div>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" defer></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js" defer></script>
 <script src="https://cdn.jsdelivr.net/npm/lenis@1.1.13/dist/lenis.min.js" defer></script>
-<script src="assets/site.js?v=20261011c" defer></script>
+<script src="assets/site.js?v=20261011d" defer></script>
 </body>
 </html>
