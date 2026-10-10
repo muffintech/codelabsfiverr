@@ -133,8 +133,8 @@ em { font-style: italic; }
 
 /* ---------- Work ---------- */
 .cl-feat { display: grid; grid-template-columns: 1.55fr 1fr; gap: clamp(28px, 4vw, 64px); align-items: center; padding-bottom: clamp(56px, 7vw, 104px); margin-bottom: clamp(56px, 7vw, 104px); border-bottom: 1px solid var(--line); }
-.cl-feat__media { position: relative; display: block; aspect-ratio: 16 / 10.2; border-radius: 6px; overflow: hidden; background: var(--green-deep); }
-.cl-feat__media img { position: relative; z-index: 1; width: 100%; height: 100%; object-fit: cover; object-position: top center; transition: transform .8s var(--ease); }
+.cl-feat__media { position: relative; display: block; aspect-ratio: 1280 / 769; border-radius: 6px; overflow: hidden; background: #0B5FC4; }
+.cl-feat__media img { position: relative; z-index: 1; width: 100%; height: 100%; object-fit: contain; transition: transform .8s var(--ease); }
 .cl-feat__media:hover img { transform: scale(1.02); }
 .cl-feat__cover { position: absolute; inset: 0; display: flex; flex-direction: column; justify-content: center; align-items: center; gap: 10px; color: #F3EDE3; text-align: center; }
 .cl-feat__cover em { font-family: var(--f-display); font-size: clamp(48px, 7vw, 104px); line-height: 1; letter-spacing: -.03em; }
