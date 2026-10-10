@@ -175,6 +175,11 @@ ul, ol { padding: 0; list-style: none; }
 .cl-compare td.y { color: var(--green); font-weight: 700; }
 .cl-compare td.n { color: #A39C8E; }
 .cl-compare tr > *:nth-child(3) { background: rgba(255,182,39,.12); }
+.cl-extras { margin-top: 28px; padding: 22px 26px; border: 2px solid var(--ink); border-radius: 18px; background: var(--cream); }
+.cl-extras h3 { font-family: var(--f-display); font-weight: 400; font-size: 22px; margin: 0 0 12px; }
+.cl-extras ul { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 10px 28px; }
+.cl-extras li { display: flex; flex-direction: column; font-size: 16px; padding-top: 10px; border-top: 1px dashed var(--line); }
+.cl-extras li span { color: var(--muted); }
 .cl-good { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px 32px; margin-top: 32px; color: var(--muted); font-size: 16px; }
 .cl-good b { color: var(--ink); }
 
