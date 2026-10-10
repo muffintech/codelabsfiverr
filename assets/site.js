@@ -451,7 +451,7 @@
       .from('.cl-hero__art .cl-sticker', { scale: 0, duration: .6, ease: 'back.out(2)', stagger: .15 }, 0.7);
     if (window.ScrollTrigger) {
       gsap.to('.cl-band', { xPercent: -4, ease: 'none', scrollTrigger: { trigger: '.cl-band', start: 'top bottom', end: 'bottom top', scrub: .5 } });
-      $$('.cl-piece__img img').forEach(function (img) {
+      $$('.cl-piece__img:not(.cl-piece__img--mock) img').forEach(function (img) {
         gsap.fromTo(img, { scale: 1.04 }, { scale: 1, ease: 'none', scrollTrigger: { trigger: img, start: 'top bottom', end: 'bottom top', scrub: .5 } });
       });
     }
