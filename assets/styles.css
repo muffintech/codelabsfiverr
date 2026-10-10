@@ -152,6 +152,9 @@ ul, ol { padding: 0; list-style: none; }
 .cl-tier__for { color: var(--muted); font-size: 16px; line-height: 1.45; min-height: 2.9em; }
 .cl-tier__price { font-family: var(--f-display); font-size: clamp(54px, 5vw, 72px); line-height: 1; letter-spacing: -.03em; margin-top: 8px; }
 .cl-tier__price span { font-size: .45em; vertical-align: .9em; margin-right: 2px; }
+.cl-tier__price s { display: block; font-family: var(--f-body); font-size: 20px; font-weight: 600; color: var(--muted); letter-spacing: 0; margin-bottom: 4px; text-decoration-color: var(--tomato); text-decoration-thickness: 2px; }
+.cl-compare s { color: #A39C8E; margin-right: 4px; text-decoration-color: var(--tomato); }
+.cl-sale { display: inline-block; font-family: var(--f-chunky); font-size: 18px; background: var(--tomato); color: #fff; border: 2px solid var(--ink); border-radius: 12px; padding: 6px 14px; box-shadow: 3px 3px 0 var(--ink); transform: rotate(-3deg); margin-bottom: 18px; }
 .cl-tier__meta { font-weight: 600; font-size: 15px; padding-bottom: 16px; border-bottom: 2px dashed var(--line); }
 .cl-list__plus { font-weight: 700; font-size: 15px; margin-top: 6px; }
 .cl-list { display: grid; gap: 9px; flex: 1; margin: 6px 0 20px; }
