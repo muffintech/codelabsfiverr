@@ -445,9 +445,16 @@
     if (!gsap || reduceMotion) return;
     if (window.ScrollTrigger) gsap.registerPlugin(window.ScrollTrigger);
     gsap.timeline({ defaults: { ease: 'power3.out' } })
-      .from('[data-hero]', { y: 26, opacity: 0, duration: .9, stagger: .08 })
-      .from('.cl-portrait', { clipPath: 'inset(100% 0 0 0)', duration: 1.2, ease: 'power4.out' }, 0.15)
-      .from('.cl-hero__img', { scale: 1.08, duration: 1.6 }, 0.15);
+      .from('[data-hero]', { y: 26, opacity: 0, duration: .8, stagger: .08 })
+      .from('.cl-sun', { scale: .6, opacity: 0, duration: 1.1 }, 0.1)
+      .from('.cl-hero__img', { y: 60, opacity: 0, duration: 1.1 }, 0.25)
+      .from('.cl-hero__art .cl-sticker', { scale: 0, duration: .6, ease: 'back.out(2)', stagger: .15 }, 0.7);
+    if (window.ScrollTrigger) {
+      gsap.to('.cl-band', { xPercent: -4, ease: 'none', scrollTrigger: { trigger: '.cl-band', start: 'top bottom', end: 'bottom top', scrub: .5 } });
+      $$('.cl-piece__img:not(.cl-piece__img--mock) img').forEach(function (img) {
+        gsap.fromTo(img, { scale: 1.04 }, { scale: 1, ease: 'none', scrollTrigger: { trigger: img, start: 'top bottom', end: 'bottom top', scrub: .5 } });
+      });
+    }
   }
 
   function boot() {
