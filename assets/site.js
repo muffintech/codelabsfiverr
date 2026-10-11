@@ -198,7 +198,7 @@
       design: design.label, project: project[0], from: val(form, 'project') === 'migrate' ? form.from.value : '',
       industry: form.industry.value, markets: markets, brand: brand[0], variants: variants[0], copy: PRICING.copy[copyKey][0],
       feats: feats.map(function (f) { return PRICING.features[f][0]; }), rush: rush,
-      launch: form.launch.value, care: form.care.checked, notes: form.notes.value.trim()
+      launch: form.launch.value, notes: form.notes.value.trim()
     };
   }
 
@@ -332,7 +332,6 @@
       'Features: ' + (e.feats.length ? e.feats.join(', ') : 'none selected'),
       'Copy: ' + e.copy,
       'Timeline: ' + (e.rush ? 'rush' : 'standard') + ' (' + e.weeks + ')' + (e.launch ? ' · launch date ' + e.launch : ''),
-      e.care ? 'Interested in ongoing store care after launch' : '',
       e.notes ? 'Notes: ' + e.notes : '',
       'Estimate: ' + money(e.low) + ' – ' + money(e.high)
     ].filter(function (l, i) { return l !== '' || i === 1; }).join('\n');
@@ -486,7 +485,7 @@
         : stars + '<blockquote>Rated 5.0 across 270+ client reviews on Fiverr.</blockquote><figcaption><a href="' + FIVERR_PROFILE + '" target="_blank" rel="noopener">Read the reviews on Fiverr</a></figcaption>';
       $('#cl-modal-cta').innerHTML = '<a class="cl-btn cl-btn--green" href="https://www.fiverr.com/codelabs/design-and-develop-your-website" target="_blank" rel="noopener">Get a store like this</a>' +
         (p.url ? '<a class="cl-arrow" href="' + p.url + '" target="_blank" rel="noopener">See it live</a>' : '');
-      dlg.scrollTop = 0;
+      var sc = $('.cl-modal__in', dlg); if (sc) sc.scrollTop = 0;
       if (lenis) lenis.stop();
       dlg.showModal();
     };

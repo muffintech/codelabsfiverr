@@ -581,11 +581,12 @@ figure:hover .cl-peek, .cl-piece__img:focus-visible .cl-peek, .cl-feat__frame:ho
 .cl-gallery__more span { font-weight: 600; max-width: 22ch; line-height: 1.35; }
 .cl-gallery__more .cl-arrow { font-style: normal; align-self: flex-start; margin-top: 8px; }
 
-.cl-modal { width: min(980px, calc(100% - 24px)); max-height: calc(100% - 24px); padding: 0; border: 2px solid var(--ink); border-radius: 24px; background: var(--paper); color: var(--ink); box-shadow: 10px 10px 0 var(--ink); overflow: auto; overscroll-behavior: contain; }
+.cl-modal { width: min(980px, calc(100% - 24px)); max-height: calc(100vh - 24px); max-height: calc(100dvh - 24px); padding: 0; border: 2px solid var(--ink); border-radius: 24px; background: var(--paper); color: var(--ink); box-shadow: 10px 10px 0 var(--ink); overflow: hidden; display: flex; flex-direction: column; }
+.cl-modal:not([open]) { display: none; }
 .cl-modal::backdrop { background: rgba(29,27,22,.6); backdrop-filter: blur(3px); }
 .cl-modal[open] { animation: cl-modal-in .4s var(--ease); }
 @keyframes cl-modal-in { from { opacity: 0; transform: translateY(24px) scale(.97); } }
-.cl-modal__in { position: relative; display: grid; grid-template-columns: 1.15fr 1fr; }
+.cl-modal__in { position: relative; display: grid; grid-template-columns: 1.15fr 1fr; flex: 1 1 auto; min-height: 0; overflow-y: auto; -webkit-overflow-scrolling: touch; overscroll-behavior: contain; touch-action: pan-y; }
 .cl-modal__x { position: absolute; right: 14px; top: 14px; z-index: 2; width: 42px; height: 42px; border-radius: 50%; border: 2px solid var(--ink); background: var(--paper); font-size: 24px; line-height: 1; cursor: pointer; box-shadow: 3px 3px 0 var(--ink); }
 .cl-modal__x:hover { background: var(--sun); }
 .cl-modal__img { background: var(--ink); display: flex; align-items: center; border-right: 2px solid var(--ink); }
@@ -641,3 +642,28 @@ html:has(.cl-modal[open]) { overflow: hidden; }
   .cl-promo span { font-size: 16px; padding: 7px 12px; }
 }
 @media (prefers-reduced-motion: reduce) { .cl-lights::after { animation: none; } }
+
+/* ---------- Brands I've worked with ---------- */
+.cl-brandgrid { display: grid; grid-template-columns: repeat(3, 1fr); gap: clamp(16px, 2vw, 26px); }
+.cl-brand { border: 2px solid rgba(244,238,227,.25); border-radius: 22px; padding: 24px 24px 20px; background: rgba(244,238,227,.04); transition: border-color .3s, transform .3s var(--ease); }
+.cl-brand:hover { border-color: var(--sun); transform: translateY(-4px); }
+.cl-brand__cat { display: inline-block; font-family: var(--f-chunky); font-size: 17px; line-height: 1.1; padding: 7px 13px; border: 2px solid var(--ink); border-radius: 12px; margin-bottom: 16px; transform: rotate(-2deg); color: var(--ink); }
+.cl-brand__cat--sun { background: var(--sun); }
+.cl-brand__cat--tomato { background: var(--tomato); color: #fff; }
+.cl-brand__cat--pink { background: var(--pink); }
+.cl-brand__cat--green { background: var(--green); color: #fff; }
+.cl-brand ul { display: grid; gap: 2px; }
+.cl-brand a { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; padding: 8px 0; border-bottom: 1px solid rgba(244,238,227,.14); font-family: var(--f-display); font-size: clamp(20px, 1.8vw, 24px); line-height: 1.2; color: var(--cream); text-decoration: none; transition: color .2s, padding-left .25s var(--ease); }
+.cl-brand li:last-child a { border-bottom: 0; }
+.cl-brand a::after { content: "↗"; font-family: var(--f-body); font-size: 15px; color: #8E8676; transition: color .2s, transform .25s var(--ease); }
+.cl-brand a:hover { color: var(--sun); padding-left: 6px; }
+.cl-brand a:hover::after { color: var(--sun); transform: translate(2px, -2px); }
+.cl-brands__note { color: #8E8676; font-size: 14px; margin-top: 26px; max-width: 80ch; }
+
+/* ---------- Estimate: Fiverr order ---------- */
+.cl-receipt__kicker { text-align: center; margin: -4px auto 6px; width: fit-content; font-weight: 700; font-size: 13px; letter-spacing: .12em; text-transform: uppercase; color: #fff; background: var(--green); padding: 5px 12px; border-radius: 999px; }
+.cl-receipt__pay { margin-top: 12px; padding: 10px 12px; border-radius: 12px; background: var(--cream); font-size: 13px; line-height: 1.45; color: var(--ink-2); text-align: center; }
+.cl-receipt__pay b { color: var(--ink); }
+
+@media (max-width: 1060px) { .cl-brandgrid { grid-template-columns: 1fr 1fr; } }
+@media (max-width: 620px) { .cl-brandgrid { grid-template-columns: 1fr; } }
