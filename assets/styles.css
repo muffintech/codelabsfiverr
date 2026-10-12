@@ -667,3 +667,16 @@ html:has(.cl-modal[open]) { overflow: hidden; }
 
 @media (max-width: 1060px) { .cl-brandgrid { grid-template-columns: 1fr 1fr; } }
 @media (max-width: 620px) { .cl-brandgrid { grid-template-columns: 1fr; } }
+
+/* ---------- Early Christmas price ---------- */
+.cl-tier__price .cl-tier__now { position: relative; display: inline-block; font-size: inherit; vertical-align: baseline; margin: 0; }
+.cl-tier__now::after { content: ""; position: absolute; left: -6%; right: -6%; top: 50%; height: 5px; margin-top: -2px; border-radius: 6px; background: var(--tomato); transform: rotate(-7deg); transform-origin: left center; transition: transform .7s var(--ease) .5s; }
+.cl-js .cl-tier:not(.is-in) .cl-tier__now::after { transform: rotate(-7deg) scaleX(0); }
+.cl-tier__price:has(.cl-tier__now) { font-size: clamp(38px, 3.4vw, 46px); color: var(--muted); }
+.cl-xprice { display: inline-block; margin: 6px 0 16px; padding: 5px; border: 2px solid var(--ink); border-radius: 14px; background: repeating-linear-gradient(-45deg, var(--tomato) 0 8px, #fff 8px 16px); box-shadow: 4px 4px 0 var(--ink); transform: rotate(-2deg); }
+.cl-xprice__in { display: grid; grid-template-columns: auto auto; align-items: center; column-gap: 12px; background: var(--paper); border-radius: 9px; padding: 8px 14px; }
+.cl-xprice__lbl { font-size: 12px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; line-height: 1.2; color: var(--green); }
+.cl-xprice b { grid-row: span 2; font-family: var(--f-chunky); font-weight: 400; font-size: clamp(38px, 3.4vw, 46px); line-height: 1; color: var(--tomato); }
+.cl-xprice small { font-size: 13px; font-weight: 600; color: var(--muted); }
+.cl-tier--pop .cl-xprice__in { background: #fff; }
+.cl-compare .cl-xp { color: var(--tomato); }
