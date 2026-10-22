@@ -27,7 +27,7 @@ assets/og-image.png 1200×630 social card (source: tools/og-image.html, render w
 
 ## Custom quote estimator
 
-The "Custom quote" section turns a reference website and a few choices into a price range. It starts at $1,500.
+The "Custom quote" section turns a reference website and a few choices into a price range. It starts at $300.
 
 - Edit the numbers in `PRICING` near the middle of `assets/site.js`: design base prices, project type (new, redesign, migration), branding, extra pages, product tiers and options, extra markets, every feature, copywriting, the +20% rush fee and the spread of the range.
 - Visitors can analyse a store they like and their current site. A current site on Shopify is set up as a redesign; on WordPress, Wix, Squarespace or BigCommerce it becomes a migration.

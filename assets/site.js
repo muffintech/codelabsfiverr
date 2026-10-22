@@ -127,37 +127,37 @@
   }
 
   /* ---------------- Custom quote calculator ----------------
-     Prices in USD. Branded stores start at $1,500. Edit the numbers here. */
+     Prices in USD. Custom quotes start at $300. Edit the numbers here. */
   var PRICING = {
-    min: 1500,
+    min: 300,
     spread: 0.25,
     rush: 0.2,
-    design: { theme: { label: 'Branded premium theme', base: 1500, weeks: 3 },
-              figma: { label: 'Custom theme from your Figma designs', base: 2000, weeks: 3.5 },
-              custom: { label: 'Fully custom design + theme', base: 2500, weeks: 4.5 } },
-    project: { new: ['New store', 0, 0], redesign: ['Redesign of existing store', 150, 0.3], migrate: ['Migration to Shopify', 350, 0.8] },
-    migrateLargeCatalogue: 150,
-    brand: { have: ['Your existing branding', 0], logo: ['Logo design', 150], kit: ['Logo + brand kit', 400] },
+    design: { theme: { label: 'Branded premium theme', base: 300, weeks: 2 },
+              figma: { label: 'Custom theme from your Figma designs', base: 750, weeks: 3 },
+              custom: { label: 'Fully custom design + theme', base: 1000, weeks: 4 } },
+    project: { new: ['New store', 0, 0], redesign: ['Redesign of existing store', 75, 0.3], migrate: ['Migration to Shopify', 175, 0.8] },
+    migrateLargeCatalogue: 75,
+    brand: { have: ['Your existing branding', 0], logo: ['Logo design', 75], kit: ['Logo + brand kit', 200] },
     includedPages: 8,
-    perPage: 60,
-    products: [ { label: 'None', cost: 0 }, { label: 'Up to 25', cost: 0 }, { label: 'Up to 100', cost: 120 },
-                { label: 'Up to 250', cost: 300 }, { label: 'Up to 500', cost: 550 }, { label: '1,000+', cost: 900 } ],
-    variants: { simple: ['Simple products', 0], options: ['Variants & product options', 150], custom: ['Personalised / configurable products', 600] },
-    perMarket: 150,
+    perPage: 30,
+    products: [ { label: 'None', cost: 0 }, { label: 'Up to 25', cost: 0 }, { label: 'Up to 100', cost: 60 },
+                { label: 'Up to 250', cost: 150 }, { label: 'Up to 500', cost: 275 }, { label: '1,000+', cost: 450 } ],
+    variants: { simple: ['Simple products', 0], options: ['Variants & product options', 75], custom: ['Personalised / configurable products', 300] },
+    perMarket: 75,
     features: {
-      megamenu: ['Mega menu & advanced filters', 200], quiz: ['Product finder quiz', 350], wishlist: ['Wishlist', 100],
-      sizing: ['Size guide & fit tools', 120], locator: ['Store locator', 150], motion: ['Custom animations', 400],
-      bundles: ['Bundles & upsells', 250], subs: ['Subscriptions', 300], loyalty: ['Loyalty & rewards', 200],
-      reviews: ['Reviews & UGC', 120], preorder: ['Pre-orders & back in stock', 150], b2b: ['B2B / wholesale', 450],
-      klaviyo: ['Klaviyo email flows', 250], seo: ['Advanced SEO', 250], speed: ['Speed & Core Web Vitals', 200],
-      tracking: ['Tracking (GA4, Meta, TikTok)', 150], blog: ['Blog & content setup', 150],
-      integration: ['Custom app / API / ERP integration', 800], translate: ['Translations', 250], a11y: ['Accessibility review', 300], age: ['Age verification', 80]
+      megamenu: ['Mega menu & advanced filters', 100], quiz: ['Product finder quiz', 175], wishlist: ['Wishlist', 50],
+      sizing: ['Size guide & fit tools', 60], locator: ['Store locator', 75], motion: ['Custom animations', 200],
+      bundles: ['Bundles & upsells', 125], subs: ['Subscriptions', 150], loyalty: ['Loyalty & rewards', 100],
+      reviews: ['Reviews & UGC', 60], preorder: ['Pre-orders & back in stock', 75], b2b: ['B2B / wholesale', 225],
+      klaviyo: ['Klaviyo email flows', 125], seo: ['Advanced SEO', 125], speed: ['Speed & Core Web Vitals', 100],
+      tracking: ['Tracking (GA4, Meta, TikTok)', 75], blog: ['Blog & content setup', 75],
+      integration: ['Custom app / API / ERP integration', 400], translate: ['Translations', 125], a11y: ['Accessibility review', 150], age: ['Age verification', 40]
     },
-    copy: { none: ['Copy by you', 0], key: ['Copywriting: key pages', 250], all: ['Copywriting: every page', 45] }
+    copy: { none: ['Copy by you', 0], key: ['Copywriting: key pages', 125], all: ['Copywriting: every page', 25] }
   };
   var refInfo = { ref: null, cur: null };
 
-  function round50(n) { return Math.round(n / 50) * 50; }
+  function round10(n) { return Math.round(n / 10) * 10; }
   function val(form, name) { var el = form.querySelector('[name="' + name + '"]:checked'); return el ? el.value : ''; }
 
   function estimate() {
@@ -188,8 +188,8 @@
     var total = lines.reduce(function (sum, l) { return sum + l[1]; }, 0);
     var rush = val(form, 'speed') === 'rush';
     if (rush) { lines.push(['Rush timeline (+20%)', total * PRICING.rush]); total *= 1 + PRICING.rush; }
-    var low = Math.max(PRICING.min, round50(total));
-    var high = round50(low * (1 + PRICING.spread));
+    var low = Math.max(PRICING.min, round10(total));
+    var high = round10(low * (1 + PRICING.spread));
     var weeks = design.weeks + project[2] + extraPages / 12 + feats.length * 0.25 + Math.max(0, prodIdx - 1) * 0.3 + (copyKey === 'all' ? 0.5 : 0);
     if (rush) weeks *= 0.75;
     var w = Math.max(2, Math.round(weeks));
